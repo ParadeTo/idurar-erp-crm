@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1900" viewBox="0 0 1400 1900" role="img" aria-labelledby="title desc">
+  <title id="title">Create Invoice core business flow top-down</title>
+  <desc id="desc">Top-down Create Invoice flow traced from frontend route and form to Redux, Axios request, Express API, invoice controller, Mongoose models, MongoDB, and response handling.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#35515f"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .title { font: 700 30px Arial, sans-serif; fill: #18323b; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #586b73; }
+      .node { fill: #ffffff; stroke: #6a908d; stroke-width: 2; rx: 8; }
+      .node-alt { fill: #fdf8ef; stroke: #b68b45; stroke-width: 2; rx: 8; }
+      .node-warn { fill: #fff7f7; stroke: #c87979; stroke-width: 2; rx: 8; }
+      .node-title { font: 700 17px Arial, sans-serif; fill: #1f3b43; }
+      .node-text { font: 13px Arial, sans-serif; fill: #52646c; }
+      .edge { stroke: #35515f; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .edge-dash { stroke: #8b6f42; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .label { font: 12px Arial, sans-serif; fill: #35515f; }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1900"/>
+  <text class="title" x="54" y="54">核心业务流程图：创建 Invoice</text>
+  <text class="subtitle" x="54" y="82">自上而下：页面 → 表单提交 → Redux/request → Express route → controller/model → 数据库 → 响应回前端。</text>
+
+  <rect class="node" x="450" y="130" width="500" height="72"/>
+  <text class="node-title" x="478" y="160">1. 打开 /invoice/create</text>
+  <text class="node-text" x="478" y="184">routes.jsx 将该路径映射到 InvoiceCreate 页面。</text>
+
+  <rect class="node" x="450" y="255" width="500" height="86"/>
+  <text class="node-title" x="478" y="285">2. InvoiceCreate 组装页面配置</text>
+  <text class="node-text" x="478" y="309">设置 entity = invoice 和页面标签。</text>
+  <text class="node-text" x="478" y="331">渲染 CreateInvoiceModule。</text>
+
+  <rect class="node" x="450" y="395" width="500" height="86"/>
+  <text class="node-title" x="478" y="425">3. CreateInvoiceModule</text>
+  <text class="node-text" x="478" y="449">ErpLayout 包裹页面内容。</text>
+  <text class="node-text" x="478" y="471">CreateItem 接收 InvoiceForm 作为创建表单。</text>
+
+  <rect class="node" x="450" y="535" width="500" height="110"/>
+  <text class="node-title" x="478" y="565">4. InvoiceForm 收集发票数据</text>
+  <text class="node-text" x="478" y="589">读取 settings.finance_settings.last_invoice_number。</text>
+  <text class="node-text" x="478" y="611">选择 client，填写 number/year/date/expiredDate/status。</text>
+  <text class="node-text" x="478" y="633">填写 items，并在前端预览 subtotal/tax/total。</text>
+
+  <rect class="node-alt" x="80" y="535" width="280" height="110"/>
+  <text class="node-title" x="104" y="565">辅助读取</text>
+  <text class="node-text" x="104" y="589">AutoCompleteAsync 调 /api/client/search。</text>
+  <text class="node-text" x="104" y="611">ErpApp/表单调 /api/setting/listAll。</text>
+  <text class="node-text" x="104" y="633">辅助读取不创建 Invoice。</text>
+
+  <rect class="node" x="450" y="705" width="500" height="100"/>
+  <text class="node-title" x="478" y="735">5. CreateItem.onSubmit</text>
+  <text class="node-text" x="478" y="759">按 quantity * price 计算每个 item.total。</text>
+  <text class="node-text" x="478" y="781">dispatch erp.create({ entity: 'invoice', jsonData })。</text>
+
+  <rect class="node" x="450" y="860" width="500" height="100"/>
+  <text class="node-title" x="478" y="890">6. redux/erp.create</text>
+  <text class="node-text" x="478" y="914">设置 create loading 状态。</text>
+  <text class="node-text" x="478" y="936">调用 request.create 并在成功后更新 current/create state。</text>
+
+  <rect class="node" x="450" y="1015" width="500" height="100"/>
+  <text class="node-title" x="478" y="1045">7. request.create</text>
+  <text class="node-text" x="478" y="1069">Axios POST invoice/create，baseURL 是 API_BASE_URL。</text>
+  <text class="node-text" x="478" y="1091">从 localStorage auth 注入 Authorization: Bearer token。</text>
+
+  <rect class="node" x="450" y="1170" width="500" height="100"/>
+  <text class="node-title" x="478" y="1200">8. Express app.js 接收 /api/invoice/create</text>
+  <text class="node-text" x="478" y="1224">请求先匹配 app.use('/api', JWT, erpApiRouter)。</text>
+  <text class="node-text" x="478" y="1246">isValidAuthToken 校验 token 并设置 req.admin。</text>
+
+  <rect class="node" x="450" y="1325" width="500" height="100"/>
+  <text class="node-title" x="478" y="1355">9. appApiRouter 匹配 ERP route</text>
+  <text class="node-text" x="478" y="1379">routesList 从 appModels 动态生成。</text>
+  <text class="node-text" x="478" y="1401">POST /invoice/create 进入 invoiceController.create。</text>
+
+  <rect class="node" x="450" y="1480" width="500" height="115"/>
+  <text class="node-title" x="478" y="1510">10. invoiceController.create</text>
+  <text class="node-text" x="478" y="1534">Joi schemaValidate 校验 client/number/year/date/items/taxRate。</text>
+  <text class="node-text" x="478" y="1556">后端重新计算 subTotal、taxTotal、total 和 paymentStatus。</text>
+  <text class="node-text" x="478" y="1578">设置 createdBy = req.admin._id。</text>
+
+  <rect class="node" x="260" y="1660" width="360" height="90"/>
+  <text class="node-title" x="284" y="1690">11a. Invoice model</text>
+  <text class="node-text" x="284" y="1714">new Invoice(body).save()。</text>
+  <text class="node-text" x="284" y="1736">随后更新 pdf = invoice-&lt;id&gt;.pdf。</text>
+  <rect class="node" x="780" y="1660" width="360" height="90"/>
+  <text class="node-title" x="804" y="1690">11b. Setting model</text>
+  <text class="node-text" x="804" y="1714">increaseBySettingKey。</text>
+  <text class="node-text" x="804" y="1736">last_invoice_number 自增。</text>
+
+  <rect class="node" x="450" y="1810" width="500" height="60"/>
+  <text class="node-title" x="478" y="1840">12. MongoDB 保存 Invoice 并更新 Setting；响应 success 后前端跳转 /invoice/read/:id。</text>
+
+  <path class="edge" d="M 700 202 L 700 255"/>
+  <path class="edge" d="M 700 341 L 700 395"/>
+  <path class="edge" d="M 700 481 L 700 535"/>
+  <path class="edge-dash" d="M 360 590 L 450 590"/>
+  <path class="edge" d="M 700 645 L 700 705"/>
+  <path class="edge" d="M 700 805 L 700 860"/>
+  <path class="edge" d="M 700 960 L 700 1015"/>
+  <path class="edge" d="M 700 1115 L 700 1170"/>
+  <path class="edge" d="M 700 1270 L 700 1325"/>
+  <path class="edge" d="M 700 1425 L 700 1480"/>
+  <path class="edge" d="M 640 1595 L 440 1660"/>
+  <path class="edge" d="M 760 1595 L 960 1660"/>
+  <path class="edge" d="M 440 1750 L 700 1810"/>
+  <path class="edge" d="M 960 1750 L 700 1810"/>
+  <path class="edge-dash" d="M 1030 1810 L 1030 1610"/>
+  <text class="label" x="1048" y="1715">PDF 文件只在 /download 时生成</text>
+</svg>

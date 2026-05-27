@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1500" viewBox="0 0 1400 1500" role="img" aria-labelledby="title desc">
+  <title id="title">IDURAR module dependencies top-down</title>
+  <desc id="desc">Top-down frontend and backend module dependencies derived from imports, route registration, controller composition, request actions, and model relationships.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#35515f"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .title { font: 700 30px Arial, sans-serif; fill: #18323b; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #586b73; }
+      .lane { fill: #ffffff; stroke: #c8d7d3; stroke-width: 1.5; rx: 12; }
+      .node { fill: #ffffff; stroke: #6a908d; stroke-width: 2; rx: 8; }
+      .node-alt { fill: #fdf8ef; stroke: #b68b45; stroke-width: 2; rx: 8; }
+      .node-warn { fill: #fff7f7; stroke: #c87979; stroke-width: 2; rx: 8; }
+      .node-title { font: 700 17px Arial, sans-serif; fill: #1f3b43; }
+      .node-text { font: 13px Arial, sans-serif; fill: #52646c; }
+      .edge { stroke: #35515f; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .edge-dash { stroke: #8b6f42; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1500"/>
+  <text class="title" x="54" y="54">模块依赖图</text>
+  <text class="subtitle" x="54" y="82">自上而下：左右两列分别表示前端和后端，每列内部按调用方向从上到下排列。</text>
+
+  <rect class="lane" x="60" y="130" width="600" height="1280"/>
+  <text class="subtitle" x="88" y="165">Frontend 主干</text>
+  <rect class="lane" x="740" y="130" width="600" height="1280"/>
+  <text class="subtitle" x="768" y="165">Backend 主干</text>
+
+  <rect class="node" x="180" y="210" width="360" height="90"/>
+  <text class="node-title" x="204" y="240">入口与应用壳</text>
+  <text class="node-text" x="204" y="264">main、RootApp、IdurarOs。</text>
+  <text class="node-text" x="204" y="286">决定 AuthRouter 或 ErpApp。</text>
+  <rect class="node" x="180" y="360" width="360" height="90"/>
+  <text class="node-title" x="204" y="390">Router/Layout</text>
+  <text class="node-text" x="204" y="414">AppRouter 使用 routes.jsx。</text>
+  <text class="node-text" x="204" y="436">Navigation、Header、ErpLayout 形成页面外壳。</text>
+  <rect class="node" x="180" y="510" width="360" height="110"/>
+  <text class="node-title" x="204" y="540">Pages</text>
+  <text class="node-text" x="204" y="564">Invoice、Customer、Payment、Settings、Profile。</text>
+  <text class="node-text" x="204" y="586">页面负责 entity、columns、form config。</text>
+  <text class="node-text" x="204" y="608">根路径 / 实际使用 Invoice。</text>
+  <rect class="node" x="180" y="690" width="360" height="110"/>
+  <text class="node-title" x="204" y="720">业务 Modules</text>
+  <text class="node-text" x="204" y="744">ErpPanelModule 支撑 Invoice/Payment。</text>
+  <text class="node-text" x="204" y="766">CrudModule 支撑 Customer。</text>
+  <text class="node-text" x="204" y="788">Setting/Profile 模块处理设置和个人资料。</text>
+  <rect class="node" x="180" y="870" width="360" height="100"/>
+  <text class="node-title" x="204" y="900">Forms/Components/Hooks</text>
+  <text class="node-text" x="204" y="924">InvoiceForm、PaymentForm、DynamicForm。</text>
+  <text class="node-text" x="204" y="946">DataTable、AutoComplete、useFetch/useOnFetch。</text>
+  <rect class="node" x="180" y="1040" width="360" height="100"/>
+  <text class="node-title" x="204" y="1070">状态层</text>
+  <text class="node-text" x="204" y="1094">Redux: auth、erp、crud、settings。</text>
+  <text class="node-text" x="204" y="1116">Context: app、erp、crud、profile。</text>
+  <rect class="node" x="180" y="1210" width="360" height="90"/>
+  <text class="node-title" x="204" y="1240">request/API 层</text>
+  <text class="node-text" x="204" y="1264">Axios 封装 CRUD/search/summary/mail。</text>
+  <text class="node-text" x="204" y="1286">serverApiConfig 定义 /api、/download、file URL。</text>
+  <rect class="node-warn" x="180" y="1340" width="360" height="50"/>
+  <text class="node-text" x="204" y="1370">Quote/Taxes/PaymentMode 和 DashboardModule 有未闭合或未接入引用。</text>
+
+  <rect class="node" x="860" y="210" width="360" height="90"/>
+  <text class="node-title" x="884" y="240">server.js/app.js</text>
+  <text class="node-text" x="884" y="264">dotenv、Mongoose、Express。</text>
+  <text class="node-text" x="884" y="286">app.js 统一注册所有路由。</text>
+  <rect class="node" x="860" y="360" width="360" height="90"/>
+  <text class="node-title" x="884" y="390">Routers</text>
+  <text class="node-text" x="884" y="414">coreAuth、coreApi、appApi。</text>
+  <text class="node-text" x="884" y="436">download 和 public 路由。</text>
+  <rect class="node" x="860" y="510" width="360" height="110"/>
+  <text class="node-title" x="884" y="540">Auth/CRUD factories</text>
+  <text class="node-text" x="884" y="564">createAuthMiddleware 生成 Admin auth。</text>
+  <text class="node-text" x="884" y="586">createCRUDController 为模型生成通用 CRUD。</text>
+  <text class="node-text" x="884" y="608">models/utils 根据 appModels 生成 routesList。</text>
+  <rect class="node" x="860" y="690" width="360" height="110"/>
+  <text class="node-title" x="884" y="720">Controllers/Middlewares</text>
+  <text class="node-text" x="884" y="744">Invoice/Payment/Client/Setting custom controllers。</text>
+  <text class="node-text" x="884" y="766">settings、upload、errorHandlers、downloadHandler。</text>
+  <text class="node-text" x="884" y="788">PDF controller 调 Pug/html-pdf。</text>
+  <rect class="node" x="860" y="870" width="360" height="100"/>
+  <text class="node-title" x="884" y="900">Models/Schemas</text>
+  <text class="node-text" x="884" y="924">Admin、AdminPassword、Setting、Upload。</text>
+  <text class="node-text" x="884" y="946">Client、Invoice、Payment。</text>
+  <rect class="node" x="860" y="1040" width="360" height="100"/>
+  <text class="node-title" x="884" y="1070">数据和集成</text>
+  <text class="node-text" x="884" y="1094">MongoDB、local public/uploads、download PDF。</text>
+  <text class="node-text" x="884" y="1116">Resend password email。</text>
+  <rect class="node-warn" x="860" y="1210" width="360" height="80"/>
+  <text class="node-title" x="884" y="1240">引用未闭合</text>
+  <text class="node-text" x="884" y="1264">Quote/Taxes/PaymentMode 模型未发现。</text>
+  <text class="node-text" x="884" y="1286">OpenAI/DO Spaces 未发现主路由调用。</text>
+
+  <path class="edge" d="M 360 300 L 360 360"/>
+  <path class="edge" d="M 360 450 L 360 510"/>
+  <path class="edge" d="M 360 620 L 360 690"/>
+  <path class="edge" d="M 360 800 L 360 870"/>
+  <path class="edge" d="M 360 970 L 360 1040"/>
+  <path class="edge" d="M 360 1140 L 360 1210"/>
+  <path class="edge-dash" d="M 540 1255 L 860 255"/>
+  <path class="edge" d="M 1040 300 L 1040 360"/>
+  <path class="edge" d="M 1040 450 L 1040 510"/>
+  <path class="edge" d="M 1040 620 L 1040 690"/>
+  <path class="edge" d="M 1040 800 L 1040 870"/>
+  <path class="edge" d="M 1040 970 L 1040 1040"/>
+  <path class="edge-dash" d="M 1040 1140 L 1040 1210"/>
+</svg>

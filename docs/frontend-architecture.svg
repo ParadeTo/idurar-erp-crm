@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1750" viewBox="0 0 1400 1750" role="img" aria-labelledby="title desc">
+  <title id="title">IDURAR frontend architecture top-down</title>
+  <desc id="desc">Top-down frontend architecture derived from main.jsx, RootApp, IdurarOs, routes, pages, modules, Redux, context, request, hooks, settings, locale, and assets.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#35515f"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .title { font: 700 30px Arial, sans-serif; fill: #18323b; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #586b73; }
+      .band { fill: #ffffff; stroke: #c8d7d3; stroke-width: 1.5; rx: 12; }
+      .node { fill: #ffffff; stroke: #6a908d; stroke-width: 2; rx: 8; }
+      .node-alt { fill: #fdf8ef; stroke: #b68b45; stroke-width: 2; rx: 8; }
+      .node-warn { fill: #fff7f7; stroke: #c87979; stroke-width: 2; rx: 8; }
+      .node-title { font: 700 17px Arial, sans-serif; fill: #1f3b43; }
+      .node-text { font: 13px Arial, sans-serif; fill: #52646c; }
+      .edge { stroke: #35515f; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .edge-dash { stroke: #8b6f42; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .label { font: 12px Arial, sans-serif; fill: #35515f; }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1750"/>
+  <text class="title" x="54" y="54">前端架构图</text>
+  <text class="subtitle" x="54" y="82">自上而下：入口 → 登录分流 → 路由页面 → 业务模块 → 状态与请求 → 工具和资源。</text>
+
+  <rect class="band" x="60" y="120" width="1280" height="210"/>
+  <text class="subtitle" x="86" y="150">1. 应用入口</text>
+  <rect class="node" x="160" y="195" width="250" height="76"/>
+  <text class="node-title" x="184" y="225">main.jsx</text>
+  <text class="node-text" x="184" y="249">createRoot 挂载 RootApp。</text>
+  <rect class="node" x="575" y="195" width="250" height="76"/>
+  <text class="node-title" x="599" y="225">RootApp</text>
+  <text class="node-text" x="599" y="249">BrowserRouter + Redux Provider + Suspense。</text>
+  <rect class="node" x="990" y="195" width="250" height="76"/>
+  <text class="node-title" x="1014" y="225">IdurarOs</text>
+  <text class="node-text" x="1014" y="249">读取 auth.isLoggedIn 决定应用分支。</text>
+
+  <rect class="band" x="60" y="390" width="1280" height="230"/>
+  <text class="subtitle" x="86" y="420">2. 登录分流和应用壳</text>
+  <rect class="node" x="180" y="465" width="300" height="95"/>
+  <text class="node-title" x="204" y="495">AuthRouter</text>
+  <text class="node-text" x="204" y="519">未登录时渲染 login/forget/reset。</text>
+  <text class="node-text" x="204" y="541">不包 ERP 导航和业务 layout。</text>
+  <rect class="node" x="550" y="465" width="300" height="95"/>
+  <text class="node-title" x="574" y="495">ErpApp</text>
+  <text class="node-text" x="574" y="519">已登录时拉取 setting。</text>
+  <text class="node-text" x="574" y="541">渲染 Navigation、Header 和 AppRouter。</text>
+  <rect class="node" x="920" y="465" width="300" height="95"/>
+  <text class="node-title" x="944" y="495">Localization/AppContext</text>
+  <text class="node-text" x="944" y="519">Localization 配置 AntD theme。</text>
+  <text class="node-text" x="944" y="541">AppContext 管导航折叠和 currentApp。</text>
+
+  <rect class="band" x="60" y="680" width="1280" height="285"/>
+  <text class="subtitle" x="86" y="710">3. 路由和页面</text>
+  <rect class="node" x="145" y="755" width="250" height="115"/>
+  <text class="node-title" x="169" y="785">AppRouter/routes.jsx</text>
+  <text class="node-text" x="169" y="809">useRoutes 合并 routes。</text>
+  <text class="node-text" x="169" y="831">根路径 / 实际指向 Invoice。</text>
+  <text class="node-text" x="169" y="853">路径变化更新 AppContext.currentApp。</text>
+  <rect class="node" x="425" y="755" width="250" height="115"/>
+  <text class="node-title" x="449" y="785">已接入页面</text>
+  <text class="node-text" x="449" y="809">Invoice list/create/read/update/pay。</text>
+  <text class="node-text" x="449" y="831">Customer、Payment、Settings。</text>
+  <text class="node-text" x="449" y="853">Profile、About、Logout。</text>
+  <rect class="node-warn" x="705" y="755" width="280" height="115"/>
+  <text class="node-title" x="729" y="785">路由引用未闭合</text>
+  <text class="node-text" x="729" y="809">routes.jsx 使用 Quote/Taxes/PaymentMode。</text>
+  <text class="node-text" x="729" y="831">对应 page import 未发现。</text>
+  <text class="node-text" x="729" y="853">后端模型也未发现。</text>
+  <rect class="node-warn" x="1015" y="755" width="240" height="115"/>
+  <text class="node-title" x="1039" y="785">存在但未接入</text>
+  <text class="node-text" x="1039" y="809">DashboardModule 文件存在。</text>
+  <text class="node-text" x="1039" y="831">未发现 route/page 引用。</text>
+  <text class="node-text" x="1039" y="853">导航 dashboard 指向 /。</text>
+
+  <rect class="band" x="60" y="1025" width="1280" height="260"/>
+  <text class="subtitle" x="86" y="1055">4. 业务模块和组件层</text>
+  <rect class="node" x="145" y="1100" width="250" height="110"/>
+  <text class="node-title" x="169" y="1130">ErpPanelModule</text>
+  <text class="node-text" x="169" y="1154">列表、操作菜单、读取、创建、更新、删除面板。</text>
+  <text class="node-text" x="169" y="1176">Invoice/Payment 模块复用。</text>
+  <rect class="node" x="425" y="1100" width="250" height="110"/>
+  <text class="node-title" x="449" y="1130">CrudModule</text>
+  <text class="node-text" x="449" y="1154">通用 CRUD 页面模块。</text>
+  <text class="node-text" x="449" y="1176">Customer 通过 DynamicForm fields 配置使用。</text>
+  <rect class="node" x="705" y="1100" width="250" height="110"/>
+  <text class="node-title" x="729" y="1130">Forms</text>
+  <text class="node-text" x="729" y="1154">InvoiceForm/PaymentForm/SettingsForm。</text>
+  <text class="node-text" x="729" y="1176">前端计算 subtotal、tax、total。</text>
+  <rect class="node" x="985" y="1100" width="250" height="110"/>
+  <text class="node-title" x="1009" y="1130">Components/Hooks</text>
+  <text class="node-text" x="1009" y="1154">DataTable、AutoCompleteAsync、SelectAsync。</text>
+  <text class="node-text" x="1009" y="1176">useFetch/useOnFetch/useMail。</text>
+
+  <rect class="band" x="60" y="1345" width="1280" height="210"/>
+  <text class="subtitle" x="86" y="1375">5. 状态层和请求层</text>
+  <rect class="node" x="180" y="1420" width="300" height="95"/>
+  <text class="node-title" x="204" y="1450">Redux store</text>
+  <text class="node-text" x="204" y="1474">auth、erp、crud、adavancedCrud、settings。</text>
+  <text class="node-text" x="204" y="1496">auth/settings 会写入 localStorage。</text>
+  <rect class="node" x="550" y="1420" width="300" height="95"/>
+  <text class="node-title" x="574" y="1450">Context reducers</text>
+  <text class="node-text" x="574" y="1474">appContext 管导航。</text>
+  <text class="node-text" x="574" y="1496">erp/crud/profile context 管 panel/modal。</text>
+  <rect class="node" x="920" y="1420" width="300" height="95"/>
+  <text class="node-title" x="944" y="1450">request/auth service</text>
+  <text class="node-text" x="944" y="1474">Axios 封装 CRUD/list/search/summary/mail。</text>
+  <text class="node-text" x="944" y="1496">从 localStorage auth 注入 Bearer token。</text>
+
+  <rect class="band" x="60" y="1615" width="1280" height="100"/>
+  <text class="subtitle" x="86" y="1645">6. 工具和资源</text>
+  <rect class="node" x="210" y="1660" width="280" height="40"/>
+  <text class="node-text" x="234" y="1685">settings/useMoney/useDate、locale/useLanguage、utils/calculate。</text>
+  <rect class="node" x="530" y="1660" width="280" height="40"/>
+  <text class="node-text" x="554" y="1685">style/images、CSS partials、AntD icons。</text>
+  <rect class="node" x="850" y="1660" width="340" height="40"/>
+  <text class="node-text" x="874" y="1685">后端目标: /api、/download、/public。</text>
+
+  <path class="edge" d="M 410 233 L 575 233"/>
+  <path class="edge" d="M 825 233 L 990 233"/>
+  <path class="edge" d="M 1115 271 L 330 465"/>
+  <path class="edge" d="M 1115 271 L 700 465"/>
+  <path class="edge" d="M 1115 271 L 1070 465"/>
+  <path class="edge" d="M 700 560 L 270 755"/>
+  <path class="edge" d="M 700 560 L 550 755"/>
+  <path class="edge" d="M 700 560 L 845 755"/>
+  <path class="edge-dash" d="M 700 560 L 1135 755"/>
+  <path class="edge" d="M 550 870 L 270 1100"/>
+  <path class="edge" d="M 550 870 L 550 1100"/>
+  <path class="edge" d="M 550 870 L 830 1100"/>
+  <path class="edge" d="M 550 870 L 1110 1100"/>
+  <path class="edge" d="M 270 1210 L 330 1420"/>
+  <path class="edge" d="M 550 1210 L 330 1420"/>
+  <path class="edge" d="M 830 1210 L 1030 1420"/>
+  <path class="edge" d="M 1110 1210 L 1030 1420"/>
+  <path class="edge" d="M 1030 1515 L 1020 1660"/>
+</svg>

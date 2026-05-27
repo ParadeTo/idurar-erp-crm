@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1780" viewBox="0 0 1400 1780" role="img" aria-labelledby="title desc">
+  <title id="title">IDURAR backend architecture top-down</title>
+  <desc id="desc">Top-down backend architecture derived from server.js, app.js, routes, controllers, middleware, models, settings, upload, PDF, and email code.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#35515f"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .title { font: 700 30px Arial, sans-serif; fill: #18323b; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #586b73; }
+      .band { fill: #ffffff; stroke: #c8d7d3; stroke-width: 1.5; rx: 12; }
+      .node { fill: #ffffff; stroke: #6a908d; stroke-width: 2; rx: 8; }
+      .node-alt { fill: #fdf8ef; stroke: #b68b45; stroke-width: 2; rx: 8; }
+      .node-warn { fill: #fff7f7; stroke: #c87979; stroke-width: 2; rx: 8; }
+      .node-title { font: 700 17px Arial, sans-serif; fill: #1f3b43; }
+      .node-text { font: 13px Arial, sans-serif; fill: #52646c; }
+      .edge { stroke: #35515f; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .edge-dash { stroke: #8b6f42; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .label { font: 12px Arial, sans-serif; fill: #35515f; }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1780"/>
+  <text class="title" x="54" y="54">后端架构图</text>
+  <text class="subtitle" x="54" y="82">自上而下：启动入口 → Express app → 路由 → 中间件/控制器 → 模型 → 数据和集成。</text>
+
+  <rect class="band" x="60" y="120" width="1280" height="220"/>
+  <text class="subtitle" x="86" y="150">1. 启动入口</text>
+  <rect class="node" x="170" y="195" width="300" height="95"/>
+  <text class="node-title" x="194" y="225">server.js</text>
+  <text class="node-text" x="194" y="249">检查 Node 版本，读取 .env/.env.local。</text>
+  <text class="node-text" x="194" y="271">mongoose.connect(process.env.DATABASE)。</text>
+  <rect class="node" x="550" y="195" width="300" height="95"/>
+  <text class="node-title" x="574" y="225">模型预加载</text>
+  <text class="node-text" x="574" y="249">glob 加载 src/models/**/*.js。</text>
+  <text class="node-text" x="574" y="271">让 mongoose.model 可在控制器里使用。</text>
+  <rect class="node" x="930" y="195" width="300" height="95"/>
+  <text class="node-title" x="954" y="225">启动 Express</text>
+  <text class="node-text" x="954" y="249">require('./app') 后 listen。</text>
+  <text class="node-text" x="954" y="271">默认端口 process.env.PORT 或 8888。</text>
+
+  <rect class="band" x="60" y="400" width="1280" height="250"/>
+  <text class="subtitle" x="86" y="430">2. Express app.js</text>
+  <rect class="node" x="210" y="475" width="300" height="100"/>
+  <text class="node-title" x="234" y="505">全局中间件</text>
+  <text class="node-text" x="234" y="529">cors、cookieParser、json/urlencoded。</text>
+  <text class="node-text" x="234" y="551">compression；fileUpload 已注释。</text>
+  <rect class="node" x="550" y="475" width="300" height="100"/>
+  <text class="node-title" x="574" y="505">路由装配</text>
+  <text class="node-text" x="574" y="529">app.use 注册 auth/core/erp/download/public。</text>
+  <text class="node-text" x="574" y="551">core 和 ERP API 前置 JWT 中间件。</text>
+  <rect class="node" x="890" y="475" width="300" height="100"/>
+  <text class="node-title" x="914" y="505">错误处理</text>
+  <text class="node-text" x="914" y="529">未匹配路由进入 notFound。</text>
+  <text class="node-text" x="914" y="551">最终进入 productionErrors。</text>
+
+  <rect class="band" x="60" y="710" width="1280" height="250"/>
+  <text class="subtitle" x="86" y="740">3. 路由层</text>
+  <rect class="node-alt" x="120" y="785" width="260" height="100"/>
+  <text class="node-title" x="144" y="815">coreAuthRouter</text>
+  <text class="node-text" x="144" y="839">/login、/forgetpassword、/resetpassword。</text>
+  <text class="node-text" x="144" y="861">/logout 需要 token。</text>
+  <rect class="node-alt" x="410" y="785" width="260" height="100"/>
+  <text class="node-title" x="434" y="815">coreApiRouter</text>
+  <text class="node-text" x="434" y="839">/admin/read/password/profile。</text>
+  <text class="node-text" x="434" y="861">/setting CRUD/readByKey/upload。</text>
+  <rect class="node-alt" x="700" y="785" width="260" height="100"/>
+  <text class="node-title" x="724" y="815">appApiRouter</text>
+  <text class="node-text" x="724" y="839">从 appModels 动态生成 CRUD。</text>
+  <text class="node-text" x="724" y="861">实际实体: client/invoice/payment。</text>
+  <rect class="node-alt" x="990" y="785" width="260" height="100"/>
+  <text class="node-title" x="1014" y="815">download/public</text>
+  <text class="node-text" x="1014" y="839">/download 生成并下载 PDF。</text>
+  <text class="node-text" x="1014" y="861">/public 安全发送 public 文件。</text>
+
+  <rect class="band" x="60" y="1020" width="1280" height="260"/>
+  <text class="subtitle" x="86" y="1050">4. 中间件和控制器</text>
+  <rect class="node" x="120" y="1095" width="260" height="110"/>
+  <text class="node-title" x="144" y="1125">createAuthMiddleware</text>
+  <text class="node-text" x="144" y="1149">Joi 校验登录和重置密码输入。</text>
+  <text class="node-text" x="144" y="1171">bcrypt 校验密码；JWT 写 loggedSessions。</text>
+  <rect class="node" x="410" y="1095" width="260" height="110"/>
+  <text class="node-title" x="434" y="1125">core controllers</text>
+  <text class="node-text" x="434" y="1149">Admin controller 处理 profile/password。</text>
+  <text class="node-text" x="434" y="1171">Setting controller 处理 settings。</text>
+  <rect class="node" x="700" y="1095" width="260" height="110"/>
+  <text class="node-title" x="724" y="1125">app controllers</text>
+  <text class="node-text" x="724" y="1149">createCRUDController 生成通用 CRUD。</text>
+  <text class="node-text" x="724" y="1171">Invoice/Payment/Client 覆盖部分方法。</text>
+  <rect class="node" x="990" y="1095" width="260" height="110"/>
+  <text class="node-title" x="1014" y="1125">middlewares/handlers</text>
+  <text class="node-text" x="1014" y="1149">settings、uploadMiddleware。</text>
+  <text class="node-text" x="1014" y="1171">catchErrors、downloadHandler。</text>
+
+  <rect class="band" x="60" y="1340" width="1280" height="220"/>
+  <text class="subtitle" x="86" y="1370">5. 模型层</text>
+  <rect class="node" x="140" y="1410" width="270" height="95"/>
+  <text class="node-title" x="164" y="1440">Core models</text>
+  <text class="node-text" x="164" y="1464">Admin、AdminPassword、Setting、Upload。</text>
+  <text class="node-text" x="164" y="1486">认证、设置和上传元数据。</text>
+  <rect class="node" x="455" y="1410" width="270" height="95"/>
+  <text class="node-title" x="479" y="1440">App models</text>
+  <text class="node-text" x="479" y="1464">Client、Invoice、Payment。</text>
+  <text class="node-text" x="479" y="1486">Invoice/Payment 关联 Client/Admin。</text>
+  <rect class="node-warn" x="770" y="1410" width="280" height="95"/>
+  <text class="node-title" x="794" y="1440">引用但模型未发现</text>
+  <text class="node-text" x="794" y="1464">Quote、Taxes、PaymentMode。</text>
+  <text class="node-text" x="794" y="1486">setup 和前端有引用，模型文件缺失。</text>
+  <rect class="node-alt" x="1095" y="1410" width="180" height="95"/>
+  <text class="node-title" x="1119" y="1440">PDF templates</text>
+  <text class="node-text" x="1119" y="1464">Invoice、Payment。</text>
+  <text class="node-text" x="1119" y="1486">Quote、Offer 仅模板存在。</text>
+
+  <rect class="band" x="60" y="1620" width="1280" height="130"/>
+  <text class="subtitle" x="86" y="1650">6. 数据和外部集成</text>
+  <rect class="node" x="155" y="1680" width="240" height="45"/>
+  <text class="node-text" x="179" y="1708">MongoDB 保存业务数据和 settings。</text>
+  <rect class="node" x="430" y="1680" width="240" height="45"/>
+  <text class="node-text" x="454" y="1708">Pug/html-pdf 生成本地 PDF。</text>
+  <rect class="node" x="705" y="1680" width="240" height="45"/>
+  <text class="node-text" x="729" y="1708">Resend 发送忘记密码邮件。</text>
+  <rect class="node-warn" x="980" y="1680" width="240" height="45"/>
+  <text class="node-text" x="1004" y="1708">OpenAI/DO Spaces 未发现主路由调用。</text>
+
+  <path class="edge" d="M 470 242 L 550 242"/>
+  <path class="edge" d="M 850 242 L 930 242"/>
+  <path class="edge" d="M 1080 290 L 700 475"/>
+  <path class="edge" d="M 700 575 L 250 785"/>
+  <path class="edge" d="M 700 575 L 540 785"/>
+  <path class="edge" d="M 700 575 L 830 785"/>
+  <path class="edge" d="M 700 575 L 1120 785"/>
+  <path class="edge" d="M 250 885 L 250 1095"/>
+  <path class="edge" d="M 540 885 L 540 1095"/>
+  <path class="edge" d="M 830 885 L 830 1095"/>
+  <path class="edge" d="M 1120 885 L 1120 1095"/>
+  <path class="edge" d="M 250 1205 L 275 1410"/>
+  <path class="edge" d="M 540 1205 L 275 1410"/>
+  <path class="edge" d="M 830 1205 L 590 1410"/>
+  <path class="edge" d="M 1120 1205 L 1185 1410"/>
+  <path class="edge" d="M 275 1505 L 275 1680"/>
+  <path class="edge" d="M 590 1505 L 275 1680"/>
+  <path class="edge" d="M 1185 1505 L 550 1680"/>
+  <path class="edge-dash" d="M 250 1205 L 825 1680"/>
+</svg>

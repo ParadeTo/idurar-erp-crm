@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1700" viewBox="0 0 1400 1700" role="img" aria-labelledby="title desc">
+  <title id="title">IDURAR system architecture top-down</title>
+  <desc id="desc">Top-down full-stack architecture derived from README, package files, Vite config, Express app/routes, frontend request code, Mongoose models, upload, PDF, and email code.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#35515f"/>
+    </marker>
+    <style>
+      .bg { fill: #f7faf8; }
+      .title { font: 700 30px Arial, sans-serif; fill: #18323b; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #586b73; }
+      .band { fill: #ffffff; stroke: #c8d7d3; stroke-width: 1.5; rx: 12; }
+      .node { fill: #ffffff; stroke: #6a908d; stroke-width: 2; rx: 8; }
+      .node-alt { fill: #fdf8ef; stroke: #b68b45; stroke-width: 2; rx: 8; }
+      .node-warn { fill: #fff7f7; stroke: #c87979; stroke-width: 2; rx: 8; }
+      .node-title { font: 700 17px Arial, sans-serif; fill: #1f3b43; }
+      .node-text { font: 13px Arial, sans-serif; fill: #52646c; }
+      .edge { stroke: #35515f; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .edge-dash { stroke: #8b6f42; stroke-width: 2; fill: none; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .label { font: 12px Arial, sans-serif; fill: #35515f; }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1700"/>
+  <text class="title" x="54" y="54">全栈系统架构图</text>
+  <text class="subtitle" x="54" y="82">自上而下：用户入口 → 前端 → Express app → 内部路由 → 数据、文件和外部服务。</text>
+
+  <rect class="band" x="60" y="120" width="1280" height="150"/>
+  <text class="subtitle" x="86" y="150">1. 客户端入口</text>
+  <rect class="node" x="520" y="170" width="360" height="72"/>
+  <text class="node-title" x="548" y="200">浏览器</text>
+  <text class="node-text" x="548" y="224">运行 React UI，并在 localStorage 保存 auth/settings。</text>
+
+  <rect class="band" x="60" y="320" width="1280" height="230"/>
+  <text class="subtitle" x="86" y="350">2. 前端应用</text>
+  <rect class="node" x="160" y="390" width="300" height="95"/>
+  <text class="node-title" x="186" y="420">Vite React 前端</text>
+  <text class="node-text" x="186" y="444">React Router + Redux + Ant Design 渲染 ERP/CRM UI。</text>
+  <text class="node-text" x="186" y="466">main/RootApp/IdurarOs 负责应用入口和登录分流。</text>
+  <rect class="node" x="550" y="390" width="300" height="95"/>
+  <text class="node-title" x="576" y="420">API 配置</text>
+  <text class="node-text" x="576" y="444">serverApiConfig 设置 API_BASE_URL、DOWNLOAD_BASE_URL。</text>
+  <text class="node-text" x="576" y="466">开发环境默认指向 localhost:8888。</text>
+  <rect class="node" x="940" y="390" width="300" height="95"/>
+  <text class="node-title" x="966" y="420">静态资源与样式</text>
+  <text class="node-text" x="966" y="444">frontend/src/style/images 提供 logo 和图片资源。</text>
+  <text class="node-text" x="966" y="466">Localization 设置 Ant Design theme。</text>
+
+  <rect class="band" x="60" y="610" width="1280" height="400"/>
+  <text class="subtitle" x="86" y="640">3. 唯一后端入口和内部路由</text>
+  <rect class="node" x="420" y="685" width="560" height="92"/>
+  <text class="node-title" x="448" y="716">Express app.js：唯一后端 HTTP 入口</text>
+  <text class="node-text" x="448" y="740">server.js 连接 MongoDB 并启动 8888；app.js 启用 CORS、body parser、compression。</text>
+  <text class="node-text" x="448" y="762">下面的路由块都注册在同一个 Express app 里，不是独立服务。</text>
+  <rect class="node-alt" x="150" y="840" width="250" height="90"/>
+  <text class="node-title" x="174" y="870">/api auth routes</text>
+  <text class="node-text" x="174" y="894">login/forget/reset 公开。</text>
+  <text class="node-text" x="174" y="916">logout 需要 token。</text>
+  <rect class="node-alt" x="430" y="840" width="250" height="90"/>
+  <text class="node-title" x="454" y="870">/api core routes + JWT</text>
+  <text class="node-text" x="454" y="894">admin/profile/settings。</text>
+  <text class="node-text" x="454" y="916">app.use('/api', JWT, coreApiRouter)。</text>
+  <rect class="node-alt" x="710" y="840" width="250" height="90"/>
+  <text class="node-title" x="734" y="870">/api ERP routes + JWT</text>
+  <text class="node-text" x="734" y="894">client/invoice/payment CRUD。</text>
+  <text class="node-text" x="734" y="916">app.use('/api', JWT, erpApiRouter)。</text>
+  <rect class="node-alt" x="990" y="840" width="250" height="90"/>
+  <text class="node-title" x="1014" y="870">/download 和 /public</text>
+  <text class="node-text" x="1014" y="894">PDF 下载和 public 文件读取。</text>
+  <text class="node-text" x="1014" y="916">app.use('/download') / app.use('/public')。</text>
+
+  <rect class="band" x="60" y="1070" width="1280" height="245"/>
+  <text class="subtitle" x="86" y="1100">4. 后端业务处理</text>
+  <rect class="node" x="150" y="1140" width="250" height="100"/>
+  <text class="node-title" x="174" y="1170">JWT 认证</text>
+  <text class="node-text" x="174" y="1194">Bearer token 由 login 返回。</text>
+  <text class="node-text" x="174" y="1216">isValidAuthToken 校验并设置 req.admin。</text>
+  <rect class="node" x="430" y="1140" width="250" height="100"/>
+  <text class="node-title" x="454" y="1170">Core controllers</text>
+  <text class="node-text" x="454" y="1194">admin/profile/settings 控制器。</text>
+  <text class="node-text" x="454" y="1216">setting upload 使用 multer 本地存储。</text>
+  <rect class="node" x="710" y="1140" width="250" height="100"/>
+  <text class="node-title" x="734" y="1170">ERP controllers</text>
+  <text class="node-text" x="734" y="1194">Invoice/Payment 有自定义业务逻辑。</text>
+  <text class="node-text" x="734" y="1216">Client 主要使用通用 CRUD。</text>
+  <rect class="node" x="990" y="1140" width="250" height="100"/>
+  <text class="node-title" x="1014" y="1170">PDF/static handlers</text>
+  <text class="node-text" x="1014" y="1194">downloadHandler 调用 Pug/html-pdf。</text>
+  <text class="node-text" x="1014" y="1216">public router 做路径安全检查。</text>
+
+  <rect class="band" x="60" y="1375" width="1280" height="220"/>
+  <text class="subtitle" x="86" y="1405">5. 数据、文件和外部依赖</text>
+  <rect class="node" x="135" y="1450" width="270" height="95"/>
+  <text class="node-title" x="159" y="1480">MongoDB</text>
+  <text class="node-text" x="159" y="1504">DATABASE env 连接。</text>
+  <text class="node-text" x="159" y="1526">模型: Admin, Setting, Client, Invoice, Payment, Upload。</text>
+  <rect class="node" x="445" y="1450" width="270" height="95"/>
+  <text class="node-title" x="469" y="1480">本地文件与 PDF</text>
+  <text class="node-text" x="469" y="1504">uploads 存头像和公司 logo。</text>
+  <text class="node-text" x="469" y="1526">download 目录保存按需生成的 PDF。</text>
+  <rect class="node" x="755" y="1450" width="230" height="95"/>
+  <text class="node-title" x="779" y="1480">Resend</text>
+  <text class="node-text" x="779" y="1504">忘记密码邮件使用 RESEND_API。</text>
+  <text class="node-text" x="779" y="1526">单据 mail 接口返回升级提示。</text>
+  <rect class="node-warn" x="1025" y="1450" width="250" height="95"/>
+  <text class="node-title" x="1049" y="1480">声明但未接入主链路</text>
+  <text class="node-text" x="1049" y="1504">OpenAI 未发现调用。</text>
+  <text class="node-text" x="1049" y="1526">DO Spaces middleware 未发现路由使用。</text>
+
+  <rect class="node-warn" x="430" y="1615" width="540" height="56"/>
+  <text class="node-title" x="454" y="1648">未发现 Dockerfile/docker-compose；翻译版 README 提到 docker-compose，但仓库中未找到配置文件。</text>
+
+  <path class="edge" d="M 700 242 L 700 390"/>
+  <text class="label" x="716" y="320">访问 UI</text>
+  <path class="edge" d="M 700 485 L 700 685"/>
+  <text class="label" x="716" y="590">Axios /api、download/public URL</text>
+  <path class="edge" d="M 700 777 L 275 840"/>
+  <path class="edge" d="M 700 777 L 555 840"/>
+  <path class="edge" d="M 700 777 L 835 840"/>
+  <path class="edge" d="M 700 777 L 1115 840"/>
+  <path class="edge" d="M 555 930 L 275 1140"/>
+  <path class="edge" d="M 555 930 L 555 1140"/>
+  <path class="edge" d="M 835 930 L 835 1140"/>
+  <path class="edge" d="M 1115 930 L 1115 1140"/>
+  <path class="edge" d="M 275 1240 L 270 1450"/>
+  <path class="edge" d="M 555 1240 L 270 1450"/>
+  <path class="edge" d="M 835 1240 L 270 1450"/>
+  <path class="edge" d="M 1115 1240 L 580 1450"/>
+  <path class="edge-dash" d="M 275 930 L 870 1450"/>
+</svg>

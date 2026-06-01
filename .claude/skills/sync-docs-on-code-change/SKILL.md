@@ -1,6 +1,6 @@
 ---
 name: sync-docs-on-code-change
-description: Use when making code changes to a project that has a docs/ directory with API, model, route, or architecture documentation. Triggers on: adding/removing API endpoints, changing DB schemas, adding frontend routes, changing Redux state shape, adding external dependencies, or changing architectural conventions.
+description: 当项目有 docs/ 目录且正在修改代码时使用。触发场景：新增/删除/改名 API 接口、修改数据库 Schema、新增前端路由、修改 Redux 状态结构、新增外部依赖、变更架构约定。
 ---
 
 # 代码变更时同步更新文档

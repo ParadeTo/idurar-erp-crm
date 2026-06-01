@@ -3,42 +3,42 @@ name: sync-docs-on-code-change
 description: Use when making code changes to a project that has a docs/ directory with API, model, route, or architecture documentation. Triggers on: adding/removing API endpoints, changing DB schemas, adding frontend routes, changing Redux state shape, adding external dependencies, or changing architectural conventions.
 ---
 
-# Sync Docs on Code Change
+# 代码变更时同步更新文档
 
-## Overview
+## 概述
 
-Code changes without doc updates leave the next reader (human or agent) with a misleading map. Update the affected section of the relevant doc **in the same commit** as the code change.
+代码改了但文档没跟上，下一个读代码的人（人类或 AI）会拿着一张过时的地图走路。**在同一个 commit 里**把受影响的文档段落一并更新。
 
-## Code Change → Doc to Update
+## 代码变更 → 需要更新的文档
 
-| What changed in code | Doc(s) to patch |
+| 代码里改了什么 | 需要更新的文档 |
 |---|---|
-| API endpoint added / removed / renamed | `docs/api-list.md` |
-| Mongoose schema field added / removed / renamed | `docs/backend-data-model.md` · `docs/domain-model.md` |
-| Frontend route added / removed | `docs/routes-pages.md` · `docs/ui-actions.md` |
-| Redux slice shape or actions changed | `docs/frontend-state-model.md` |
-| External service / env var added or removed | `docs/external-integrations.md` |
-| New middleware, service call, or data flow step | `docs/data-flow.md` |
-| Architectural convention or project rule changed | `CLAUDE.md` |
-| Major structural change (new layer, new module) | Relevant SVG in `docs/` |
+| 新增 / 删除 / 重命名 API 接口 | `docs/api-list.md` |
+| Mongoose Schema 字段新增 / 删除 / 改名 | `docs/backend-data-model.md` · `docs/domain-model.md` |
+| 前端路由新增 / 删除 | `docs/routes-pages.md` · `docs/ui-actions.md` |
+| Redux slice 结构或 action 变化 | `docs/frontend-state-model.md` |
+| 外部服务 / 环境变量新增或删除 | `docs/external-integrations.md` |
+| 新增中间件、服务调用或数据流步骤 | `docs/data-flow.md` |
+| 架构约定或项目规则改变 | `CLAUDE.md` |
+| 重大结构变化（新增层、新增模块） | `docs/` 下相关 SVG 图 |
 
-## Process
+## 操作步骤
 
-1. Before committing, identify which row(s) above apply.
-2. Open only the affected doc — read the relevant section.
-3. Edit in place: patch the affected rows/sentences only. Do not regenerate the whole doc.
-4. Stage code + doc changes together in one commit.
+1. 提交前，对照上表确认哪几行适用。
+2. 只打开受影响的文档，定位到相关段落。
+3. **就地修改**：只改动变化的那几行/段，不要重新生成整个文档。
+4. 代码和文档改动一起 `git add`，放在同一个 commit 里提交。
 
-## Red Flags — Stop and Update Docs
+## 危险信号 — 遇到这些立刻停下来补文档
 
-- "I'll update the docs later" → later never comes; do it now.
-- Committing code without touching any doc → check the table above.
-- Rewriting the entire doc when one row changed → patch only what changed.
-- Updating docs but leaving them unstaged → always commit together.
+- "文档待会儿再更新" → 待会儿永远不来，现在就更新。
+- 提交代码但没有碰任何文档 → 回去对照上表检查。
+- 只改了一行却重写整篇文档 → 只改变化的部分。
+- 文档改了但没有 stage → 必须和代码一起提交。
 
-## What "Out of Sync" Looks Like
+## 文档"跑偏"长什么样
 
-- `api-list.md` describes an endpoint that no longer exists.
-- `backend-data-model.md` shows a field that was removed.
-- `routes-pages.md` has a path that 404s.
-- `CLAUDE.md` describes a convention that was silently changed.
+- `api-list.md` 里描述了一个已经不存在的接口。
+- `backend-data-model.md` 里展示了一个已被删除的字段。
+- `routes-pages.md` 里有个路径访问会 404。
+- `CLAUDE.md` 里描述了一条已被悄悄改掉的约定。

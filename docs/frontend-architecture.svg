@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 780" width="920" height="780"
+     font-family="Arial, sans-serif" font-size="13" fill="#333">
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="460" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">
+    Frontend Architecture — IDURAR ERP/CRM
+  </text>
+
+  <!-- ═══ Entry ═══ -->
+  <rect x="360" y="42" width="200" height="45" rx="6" fill="#E3F2FD" stroke="#1E88E5" stroke-width="1.5"/>
+  <text x="460" y="61" text-anchor="middle" font-weight="bold" fill="#0D47A1">main.jsx</text>
+  <text x="460" y="78" text-anchor="middle" font-size="11" fill="#555">createRoot → render RootApp</text>
+
+  <line x1="460" y1="87" x2="460" y2="122" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══ RootApp ═══ -->
+  <rect x="300" y="122" width="320" height="50" rx="6" fill="#DCEEFB" stroke="#1E88E5" stroke-width="1.5"/>
+  <text x="460" y="143" text-anchor="middle" font-weight="bold" fill="#0D47A1">RootApp.jsx</text>
+  <text x="460" y="160" text-anchor="middle" font-size="11" fill="#555">BrowserRouter · Redux &lt;Provider store&gt; · &lt;Suspense&gt;</text>
+
+  <line x1="460" y1="172" x2="460" y2="207" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══ IdurarOs (auth gate) ═══ -->
+  <rect x="280" y="207" width="360" height="52" rx="6" fill="#EDE7F6" stroke="#7B1FA2" stroke-width="1.5"/>
+  <text x="460" y="228" text-anchor="middle" font-weight="bold" fill="#4A148C">IdurarOs.jsx — Auth Gate</text>
+  <text x="460" y="245" text-anchor="middle" font-size="11" fill="#555">useSelector(selectAuth.isLoggedIn) → route to AuthRouter or ErpApp</text>
+
+  <!-- IdurarOs → AuthRouter (left branch) -->
+  <line x1="360" y1="259" x2="210" y2="300" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="218" y="288" font-size="11" fill="#777">not logged in</text>
+
+  <!-- AuthRouter -->
+  <rect x="60" y="300" width="260" height="50" rx="6" fill="#FCE4EC" stroke="#C62828" stroke-width="1.5"/>
+  <text x="190" y="321" text-anchor="middle" font-weight="bold" fill="#B71C1C">AuthRouter.jsx</text>
+  <text x="190" y="337" text-anchor="middle" font-size="11" fill="#555">Login · ForgetPassword · ResetPassword</text>
+
+  <!-- IdurarOs → ErpApp (right branch) -->
+  <line x1="560" y1="259" x2="670" y2="300" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="585" y="288" font-size="11" fill="#777">logged in</text>
+
+  <!-- ═══ ErpApp ═══ -->
+  <rect x="540" y="300" width="340" height="60" rx="6" fill="#E8F5E9" stroke="#388E3C" stroke-width="1.5"/>
+  <text x="710" y="322" text-anchor="middle" font-weight="bold" fill="#1B5E20">ErpApp.jsx</text>
+  <text x="710" y="340" text-anchor="middle" font-size="11" fill="#555">Ant Design &lt;Layout&gt; · loads Settings on mount</text>
+  <text x="710" y="356" text-anchor="middle" font-size="11" fill="#555">Navigation + HeaderContent + AppRouter</text>
+
+  <!-- ErpApp → AppRouter -->
+  <line x1="710" y1="360" x2="710" y2="400" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══ AppRouter + Pages ═══ -->
+  <rect x="430" y="400" width="560" height="100" rx="6" fill="#F1F8E9" stroke="#689F38" stroke-width="1.5"/>
+  <text x="710" y="420" text-anchor="middle" font-weight="bold" fill="#33691E">AppRouter.jsx — Pages (lazy-loaded)</text>
+
+  <!-- Page chips -->
+  <rect x="445" y="432" width="90" height="28" rx="4" fill="#fff" stroke="#AED581" stroke-width="1"/>
+  <text x="490" y="451" text-anchor="middle" font-size="11" fill="#333">/invoice</text>
+
+  <rect x="545" y="432" width="90" height="28" rx="4" fill="#fff" stroke="#AED581" stroke-width="1"/>
+  <text x="590" y="451" text-anchor="middle" font-size="11" fill="#333">/customer</text>
+
+  <rect x="645" y="432" width="90" height="28" rx="4" fill="#fff" stroke="#AED581" stroke-width="1"/>
+  <text x="690" y="451" text-anchor="middle" font-size="11" fill="#333">/payment</text>
+
+  <rect x="745" y="432" width="80" height="28" rx="4" fill="#fff" stroke="#AED581" stroke-width="1"/>
+  <text x="785" y="451" text-anchor="middle" font-size="11" fill="#333">/quote</text>
+
+  <rect x="835" y="432" width="90" height="28" rx="4" fill="#fff" stroke="#AED581" stroke-width="1"/>
+  <text x="880" y="451" text-anchor="middle" font-size="11" fill="#333">/settings</text>
+
+  <text x="710" y="492" text-anchor="middle" font-size="11" fill="#555">
+    Each page delegates to a Module (e.g. InvoiceCreate → CreateInvoiceModule)
+  </text>
+
+  <!-- Arrow: Pages → Modules -->
+  <line x1="710" y1="500" x2="710" y2="540" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══ Business Modules ═══ -->
+  <rect x="130" y="540" width="760" height="65" rx="6" fill="#FFF8E1" stroke="#F9A825" stroke-width="1.5"/>
+  <text x="510" y="560" text-anchor="middle" font-weight="bold" fill="#E65100">Business Modules (src/modules/)</text>
+
+  <rect x="145" y="570" width="125" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="208" y="587" text-anchor="middle" font-size="11" fill="#333">InvoiceModule</text>
+
+  <rect x="280" y="570" width="125" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="343" y="587" text-anchor="middle" font-size="11" fill="#333">PaymentModule</text>
+
+  <rect x="415" y="570" width="110" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="470" y="587" text-anchor="middle" font-size="11" fill="#333">QuoteModule</text>
+
+  <rect x="535" y="570" width="120" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="595" y="587" text-anchor="middle" font-size="11" fill="#333">ErpPanelModule</text>
+
+  <rect x="665" y="570" width="110" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="720" y="587" text-anchor="middle" font-size="11" fill="#333">CrudModule</text>
+
+  <rect x="785" y="570" width="95" height="26" rx="4" fill="#fff" stroke="#FFD54F" stroke-width="1"/>
+  <text x="833" y="587" text-anchor="middle" font-size="11" fill="#333">SettingModule</text>
+
+  <!-- Modules → Redux (left) -->
+  <line x1="400" y1="605" x2="310" y2="648" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Modules → Components (right) -->
+  <line x1="660" y1="605" x2="720" y2="648" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══ Redux State ═══ -->
+  <rect x="60" y="648" width="340" height="68" rx="6" fill="#FBE9E7" stroke="#E64A19" stroke-width="1.5"/>
+  <text x="230" y="668" text-anchor="middle" font-weight="bold" fill="#BF360C">Redux Store (src/redux/)</text>
+  <text x="230" y="685" text-anchor="middle" font-size="11" fill="#555">auth · erp · crud · adavancedCrud · settings</text>
+  <text x="230" y="701" text-anchor="middle" font-size="11" fill="#555">actions → request/axios → REST API</text>
+
+  <!-- ═══ Shared Components ═══ -->
+  <rect x="440" y="648" width="420" height="68" rx="6" fill="#E8EAF6" stroke="#3949AB" stroke-width="1.5"/>
+  <text x="650" y="668" text-anchor="middle" font-weight="bold" fill="#1A237E">Shared (src/components/ · src/layout/ · src/utils/)</text>
+  <text x="650" y="685" text-anchor="middle" font-size="11" fill="#555">DataTable · SelectAsync · Loading · PageLoader · …</text>
+  <text x="650" y="701" text-anchor="middle" font-size="11" fill="#555">ErpLayout · CrudLayout · AuthLayout · calculate · storePersist</text>
+
+  <!-- Legend -->
+  <text x="460" y="748" text-anchor="middle" font-size="11" fill="#888">
+    Auth persisted in localStorage via storePersist · Settings loaded globally on ErpApp mount
+  </text>
+</svg>

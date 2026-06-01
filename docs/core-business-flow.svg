@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 900" width="960" height="900"
+     font-family="Arial, sans-serif" font-size="13" fill="#333">
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#B71C1C"/>
+    </marker>
+    <marker id="arrow-grn" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1B5E20"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="480" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">
+    Core Business Flow — Create Invoice
+  </text>
+  <text x="480" y="44" text-anchor="middle" font-size="12" fill="#666">
+    From UI interaction to MongoDB write — full chain traced from source code
+  </text>
+
+  <!-- ══════════════ FRONTEND SIDE ══════════════ -->
+
+  <!-- Step 1: User navigates -->
+  <rect x="290" y="60" width="380" height="50" rx="6" fill="#E3F2FD" stroke="#1E88E5" stroke-width="1.5"/>
+  <text x="480" y="80" text-anchor="middle" font-weight="bold" fill="#0D47A1">① User navigates to /invoice/create</text>
+  <text x="480" y="98" text-anchor="middle" font-size="11" fill="#555">AppRouter → lazy import InvoiceCreate page</text>
+
+  <line x1="480" y1="110" x2="480" y2="148" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Page / Module render -->
+  <rect x="200" y="148" width="560" height="68" rx="6" fill="#DCEEFB" stroke="#1E88E5" stroke-width="1.5"/>
+  <text x="480" y="170" text-anchor="middle" font-weight="bold" fill="#0D47A1">② InvoiceCreate.jsx → CreateInvoiceModule → CreateItem</text>
+  <text x="480" y="187" text-anchor="middle" font-size="11" fill="#555">
+    src/pages/Invoice/InvoiceCreate.jsx → src/modules/InvoiceModule/CreateInvoiceModule/index.jsx
+  </text>
+  <text x="480" y="204" text-anchor="middle" font-size="11" fill="#555">
+    Renders ErpPanelModule/CreateItem.jsx + InvoiceForm (Ant Design Form)
+  </text>
+
+  <line x1="480" y1="216" x2="480" y2="258" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: User fills + submits -->
+  <rect x="240" y="258" width="480" height="60" rx="6" fill="#E8F5E9" stroke="#388E3C" stroke-width="1.5"/>
+  <text x="480" y="278" text-anchor="middle" font-weight="bold" fill="#1B5E20">③ User fills InvoiceForm → clicks Save</text>
+  <text x="480" y="296" text-anchor="middle" font-size="11" fill="#555">
+    Fields: client, date, expiredDate, items[], taxRate, discount, currency, notes
+  </text>
+  <text x="480" y="312" text-anchor="middle" font-size="11" fill="#555">
+    SaveForm.handelClick() → form.submit() → CreateItem.handelFinish(values)
+  </text>
+
+  <line x1="480" y1="318" x2="480" y2="358" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 4: Redux dispatch -->
+  <rect x="240" y="358" width="480" height="60" rx="6" fill="#FBE9E7" stroke="#E64A19" stroke-width="1.5"/>
+  <text x="480" y="378" text-anchor="middle" font-weight="bold" fill="#BF360C">④ dispatch(erp.create({ entity: 'invoice', jsonData }))</text>
+  <text x="480" y="395" text-anchor="middle" font-size="11" fill="#555">
+    src/redux/erp/actions.js — dispatches REQUEST_LOADING → calls request.create()
+  </text>
+  <text x="480" y="411" text-anchor="middle" font-size="11" fill="#555">
+    request.js: axios.post('/api/invoice/create', jsonData, { Authorization: Bearer token })
+  </text>
+
+  <!-- Divider line -->
+  <line x1="60" y1="430" x2="900" y2="430" stroke="#BDBDBD" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="480" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="#888">— HTTP boundary — (REST POST /api/invoice/create) —</text>
+
+  <!-- ══════════════ BACKEND SIDE ══════════════ -->
+
+  <line x1="480" y1="452" x2="480" y2="492" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 5: JWT Middleware -->
+  <rect x="250" y="492" width="460" height="50" rx="6" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+  <text x="480" y="513" text-anchor="middle" font-weight="bold" fill="#F57F17">⑤ isValidAuthToken middleware</text>
+  <text x="480" y="530" text-anchor="middle" font-size="11" fill="#555">
+    src/controllers/middlewaresControllers/createAuthMiddleware/isValidAuthToken.js
+  </text>
+
+  <line x1="480" y1="542" x2="480" y2="585" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 6: invoiceController.create -->
+  <rect x="160" y="585" width="640" height="90" rx="6" fill="#FCE4EC" stroke="#C62828" stroke-width="1.5"/>
+  <text x="480" y="606" text-anchor="middle" font-weight="bold" fill="#B71C1C">⑥ invoiceController.create(req, res)</text>
+  <text x="480" y="623" text-anchor="middle" font-size="11" fill="#555">
+    src/controllers/appControllers/invoiceController/create.js
+  </text>
+  <text x="480" y="639" text-anchor="middle" font-size="11" fill="#555">
+    a) Joi schema validate (schemaValidate.js) → 400 if invalid
+  </text>
+  <text x="480" y="655" text-anchor="middle" font-size="11" fill="#555">
+    b) calculate subTotal · taxTotal · total (currency.js) · set paymentStatus
+  </text>
+  <text x="480" y="671" text-anchor="middle" font-size="11" fill="#555">
+    c) body.createdBy = req.admin._id
+  </text>
+
+  <line x1="480" y1="675" x2="480" y2="720" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 7: MongoDB save -->
+  <rect x="200" y="720" width="560" height="68" rx="6" fill="#FFF3E0" stroke="#F57C00" stroke-width="1.5"/>
+  <text x="480" y="742" text-anchor="middle" font-weight="bold" fill="#E65100">⑦ new Model(body).save() → MongoDB Invoice collection</text>
+  <text x="480" y="759" text-anchor="middle" font-size="11" fill="#555">
+    Schema: Invoice refs Client (autopopulate) + Admin + Payment[]
+  </text>
+  <text x="480" y="776" text-anchor="middle" font-size="11" fill="#555">
+    Then: Model.findOneAndUpdate(_id, { pdf: 'invoice-{id}.pdf' }) · increaseBySettingKey('last_invoice_number')
+  </text>
+
+  <line x1="480" y1="788" x2="480" y2="830" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 8: Response -->
+  <rect x="250" y="830" width="460" height="50" rx="6" fill="#E8F5E9" stroke="#388E3C" stroke-width="1.5"/>
+  <text x="480" y="851" text-anchor="middle" font-weight="bold" fill="#1B5E20">⑧ res.json({ success: true, result: invoice })</text>
+  <text x="480" y="868" text-anchor="middle" font-size="11" fill="#555">
+    Redux: REQUEST_SUCCESS + CURRENT_ITEM → navigate to /invoice/read/:id
+  </text>
+
+  <!-- Side annotation: auth token flow -->
+  <rect x="40" y="492" width="180" height="52" rx="4" fill="#FAFAFA" stroke="#BDBDBD" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="130" y="511" text-anchor="middle" font-size="10" fill="#777">JWT from localStorage:</text>
+  <text x="130" y="525" text-anchor="middle" font-size="10" fill="#777">storePersist.get('auth')</text>
+  <text x="130" y="539" text-anchor="middle" font-size="10" fill="#777">→ axios headers.Authorization</text>
+  <line x1="220" y1="518" x2="250" y2="518" stroke="#BDBDBD" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+
+  <!-- Side annotation: PDF note -->
+  <rect x="760" y="720" width="175" height="52" rx="4" fill="#FAFAFA" stroke="#BDBDBD" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="848" y="739" text-anchor="middle" font-size="10" fill="#777">PDF generated on-demand</text>
+  <text x="848" y="753" text-anchor="middle" font-size="10" fill="#777">GET /download/invoice/{id}.pdf</text>
+  <text x="848" y="767" text-anchor="middle" font-size="10" fill="#777">via pdfController (pug+html-pdf)</text>
+  <line x1="760" y1="746" x2="728" y2="746" stroke="#BDBDBD" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+</svg>

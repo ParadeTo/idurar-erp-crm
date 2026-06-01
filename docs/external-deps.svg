@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 640" width="920" height="640"
+     font-family="Arial, sans-serif" font-size="13" fill="#333">
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+    <marker id="arrow-req" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#C62828"/>
+    </marker>
+    <marker id="arrow-opt" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#9C27B0"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="460" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">
+    External Dependencies — IDURAR ERP/CRM
+  </text>
+
+  <!-- Legend -->
+  <line x1="600" y1="18" x2="630" y2="18" stroke="#C62828" stroke-width="2"/>
+  <text x="635" y="22" font-size="11" fill="#555">Required</text>
+  <line x1="700" y1="18" x2="730" y2="18" stroke="#9C27B0" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="735" y="22" font-size="11" fill="#555">Optional / Premium</text>
+
+  <!-- ═══ Application (center top) ═══ -->
+  <rect x="360" y="45" width="200" height="50" rx="6" fill="#E8F5E9" stroke="#388E3C" stroke-width="2"/>
+  <text x="460" y="67" text-anchor="middle" font-weight="bold" fill="#1B5E20">IDURAR Application</text>
+  <text x="460" y="84" text-anchor="middle" font-size="11" fill="#555">Node.js v20 · React 18 · Express 4</text>
+
+  <!-- ──── Required ──── -->
+
+  <!-- MongoDB -->
+  <line x1="380" y1="95" x2="175" y2="168" stroke="#C62828" stroke-width="2" marker-end="url(#arrow-req)"/>
+  <rect x="40" y="168" width="270" height="68" rx="6" fill="#FFF3E0" stroke="#F57C00" stroke-width="1.5"/>
+  <text x="175" y="191" text-anchor="middle" font-weight="bold" fill="#E65100">MongoDB</text>
+  <text x="175" y="208" text-anchor="middle" font-size="11" fill="#555">Atlas (cloud) or local instance</text>
+  <text x="175" y="222" text-anchor="middle" font-size="11" fill="#777">env: DATABASE="mongodb://..."</text>
+  <text x="175" y="236" text-anchor="middle" font-size="11" fill="#777">lib: mongoose ^8 · mongoose-autopopulate</text>
+
+  <!-- JWT Auth -->
+  <line x1="420" y1="95" x2="310" y2="168" stroke="#C62828" stroke-width="2" marker-end="url(#arrow-req)"/>
+  <rect x="330" y="168" width="260" height="68" rx="6" fill="#FCE4EC" stroke="#C62828" stroke-width="1.5"/>
+  <text x="460" y="191" text-anchor="middle" font-weight="bold" fill="#B71C1C">JWT Authentication</text>
+  <text x="460" y="208" text-anchor="middle" font-size="11" fill="#555">jsonwebtoken ^9 · bcryptjs ^2</text>
+  <text x="460" y="222" text-anchor="middle" font-size="11" fill="#777">env: JWT_SECRET="your_private_key"</text>
+  <text x="460" y="236" text-anchor="middle" font-size="11" fill="#777">sessions stored in AdminPassword.loggedSessions[]</text>
+
+  <!-- Local File Storage -->
+  <line x1="500" y1="95" x2="620" y2="168" stroke="#C62828" stroke-width="2" marker-end="url(#arrow-req)"/>
+  <rect x="612" y="168" width="268" height="68" rx="6" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+  <text x="746" y="191" text-anchor="middle" font-weight="bold" fill="#F57F17">Local File Storage</text>
+  <text x="746" y="208" text-anchor="middle" font-size="11" fill="#555">Multer ^1 disk storage → src/public/uploads/</text>
+  <text x="746" y="222" text-anchor="middle" font-size="11" fill="#777">env: PUBLIC_SERVER_FILE="http://localhost:8888/"</text>
+  <text x="746" y="236" text-anchor="middle" font-size="11" fill="#777">stores admin photo, setting images</text>
+
+  <!-- PDF Generation -->
+  <line x1="410" y1="95" x2="175" y2="312" stroke="#C62828" stroke-width="2" marker-end="url(#arrow-req)"/>
+  <rect x="40" y="312" width="270" height="68" rx="6" fill="#E8EAF6" stroke="#3949AB" stroke-width="1.5"/>
+  <text x="175" y="335" text-anchor="middle" font-weight="bold" fill="#1A237E">PDF Generation</text>
+  <text x="175" y="352" text-anchor="middle" font-size="11" fill="#555">html-pdf ^3 · pug ^3</text>
+  <text x="175" y="366" text-anchor="middle" font-size="11" fill="#777">pug templates: Invoice · Quote · Payment · Offer</text>
+  <text x="175" y="380" text-anchor="middle" font-size="11" fill="#777">GET /download/:dir/:file → stream PDF</text>
+
+  <!-- ──── Optional / Premium ──── -->
+
+  <!-- AWS S3 -->
+  <line x1="540" y1="95" x2="746" y2="312" stroke="#9C27B0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-opt)"/>
+  <rect x="612" y="312" width="268" height="68" rx="6" fill="#F3E5F5" stroke="#8E24AA" stroke-width="1.5"/>
+  <text x="746" y="335" text-anchor="middle" font-weight="bold" fill="#4A148C">AWS S3 (optional)</text>
+  <text x="746" y="352" text-anchor="middle" font-size="11" fill="#555">@aws-sdk/client-s3 ^3</text>
+  <text x="746" y="366" text-anchor="middle" font-size="11" fill="#777">env: VITE_FILE_BASE_URL</text>
+  <text x="746" y="380" text-anchor="middle" font-size="11" fill="#777">alternative file storage backend</text>
+
+  <!-- Resend Email -->
+  <line x1="430" y1="95" x2="175" y2="452" stroke="#9C27B0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-opt)"/>
+  <rect x="40" y="452" width="270" height="68" rx="6" fill="#F3E5F5" stroke="#8E24AA" stroke-width="1.5"/>
+  <text x="175" y="475" text-anchor="middle" font-weight="bold" fill="#4A148C">Resend (email, premium)</text>
+  <text x="175" y="492" text-anchor="middle" font-size="11" fill="#555">resend ^2</text>
+  <text x="175" y="506" text-anchor="middle" font-size="11" fill="#777">env: RESEND_API="re_..."</text>
+  <text x="175" y="520" text-anchor="middle" font-size="11" fill="#777">POST /invoice/mail (stubbed in OSS)</text>
+
+  <!-- OpenAI -->
+  <line x1="510" y1="95" x2="746" y2="452" stroke="#9C27B0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-opt)"/>
+  <rect x="612" y="452" width="268" height="68" rx="6" fill="#F3E5F5" stroke="#8E24AA" stroke-width="1.5"/>
+  <text x="746" y="475" text-anchor="middle" font-weight="bold" fill="#4A148C">OpenAI API (optional)</text>
+  <text x="746" y="492" text-anchor="middle" font-size="11" fill="#555">openai ^4</text>
+  <text x="746" y="506" text-anchor="middle" font-size="11" fill="#777">env: OPENAI_API_KEY="sk-..."</text>
+  <text x="746" y="520" text-anchor="middle" font-size="11" fill="#777">AI-assist features</text>
+
+  <!-- ──── Runtime / Deploy ──── -->
+  <rect x="230" y="452" width="460" height="68" rx="6" fill="#ECEFF1" stroke="#607D8B" stroke-width="1.5"/>
+  <text x="460" y="475" text-anchor="middle" font-weight="bold" fill="#37474F">Runtime &amp; Deployment</text>
+  <text x="460" y="492" text-anchor="middle" font-size="11" fill="#555">Node.js v20 · npm 10 · Vite 5 (frontend build)</text>
+  <text x="460" y="506" text-anchor="middle" font-size="11" fill="#777">env: NODE_ENV · PORT (default 8888) · OPENSSL_CONF</text>
+  <text x="460" y="520" text-anchor="middle" font-size="11" fill="#777">Sponsor: DigitalOcean · deploy: cloud.idurarapp.com (enterprise)</text>
+
+  <!-- note -->
+  <text x="460" y="572" text-anchor="middle" font-size="11" fill="#888">
+    Frontend env (Vite): VITE_BACKEND_SERVER · VITE_DEV_REMOTE · VITE_FILE_BASE_URL
+  </text>
+  <text x="460" y="590" text-anchor="middle" font-size="11" fill="#888">
+    npm run setup → seeds initial Admin + Settings into MongoDB
+  </text>
+</svg>

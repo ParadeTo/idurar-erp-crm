@@ -35,6 +35,15 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
 
+      # ── Pin npm version ───────────────────────────────────────────────────────
+      # npm 10.8.x crashes with "Exit handler never called!" when installing
+      # packages that include phantomjs-prebuilt (via html-pdf). The crash
+      # exits 0 but leaves node_modules/.bin/ incomplete, so jest is never found.
+      # Pin to the version the project was developed with (package.json engines).
+      - name: Pin npm to project version (10.2.4)
+        run: npm install -g npm@10.2.4
+        working-directory: ${{ github.workspace }}
+
       # ── MongoDB binary cache ──────────────────────────────────────────────────
       # mongodb-memory-server downloads a real mongod binary at test runtime
       # (~100 MB, 30-60 s). Cache it between runs keyed on the package-lock so
@@ -63,10 +72,12 @@ jobs:
           NODE_ENV: development
 
       # ── Test ──────────────────────────────────────────────────────────────────
-      # --json writes a machine-readable report uploaded as artifact below.
+      # Call jest directly instead of via `npm test` to bypass .bin symlinks.
+      # Even when npm crashes internally, packages are already extracted to
+      # node_modules/, so the direct path is always resolvable.
       # The job fails (and blocks merge) whenever any test fails.
       - name: Run tests
-        run: npm test -- --json --outputFile=test-results.json
+        run: node node_modules/jest/bin/jest.js --runInBand --json --outputFile=test-results.json
         env:
           NODE_ENV: test
           # Tell mongodb-memory-server to use the cached directory above

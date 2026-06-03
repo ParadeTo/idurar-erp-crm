@@ -49,8 +49,14 @@ jobs:
             mongoms-${{ runner.os }}-
 
       # ── Install ───────────────────────────────────────────────────────────────
+      # NODE_ENV=development prevents npm from skipping devDependencies.
+      # When NODE_ENV=production (possible on some runners), npm ci omits them,
+      # leaving jest absent and causing "jest: not found" at runtime.
+      # --include=dev is a second safeguard for npm 8+ explicit omit logic.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
+        env:
+          NODE_ENV: development
 
       # ── Test ──────────────────────────────────────────────────────────────────
       # --json writes a machine-readable report uploaded as artifact below.
@@ -58,7 +64,7 @@ jobs:
       - name: Run tests
         run: npm test -- --json --outputFile=test-results.json
         env:
-          CI: true
+          NODE_ENV: test
           # Tell mongodb-memory-server to use the cached directory above
           MONGOMS_PREFER_GLOBAL_PATH: 1
 

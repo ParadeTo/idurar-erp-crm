@@ -32,6 +32,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          # Force public registry — local ~/.npmrc may point to a private
+          # mirror (e.g. npm.shopee.io) that is unreachable from CI runners.
+          registry-url: 'https://registry.npmjs.org'
           cache: npm
           cache-dependency-path: backend/package-lock.json
 

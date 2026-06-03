@@ -49,12 +49,16 @@ jobs:
             mongoms-${{ runner.os }}-
 
       # ── Install ───────────────────────────────────────────────────────────────
-      # NODE_ENV=development prevents npm from skipping devDependencies.
-      # When NODE_ENV=production (possible on some runners), npm ci omits them,
-      # leaving jest absent and causing "jest: not found" at runtime.
-      # --include=dev is a second safeguard for npm 8+ explicit omit logic.
+      # --ignore-scripts skips postinstall hooks. Without it, phantomjs-prebuilt
+      # (pulled in by html-pdf) tries to download the PhantomJS binary in CI,
+      # crashes with "npm error Exit handler never called!", and leaves
+      # node_modules/.bin/ incomplete — so jest is never found.
+      # .bin symlinks are created by npm's link step (not scripts), so jest
+      # remains fully accessible after this flag.
+      # mongodb-memory-server will download its mongod binary at test runtime
+      # from the cache restored above instead of during postinstall.
       - name: Install dependencies
-        run: npm ci --include=dev
+        run: npm ci --ignore-scripts
         env:
           NODE_ENV: development
 

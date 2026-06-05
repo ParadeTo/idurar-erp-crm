@@ -254,6 +254,54 @@ Handler：`src/handlers/downloadHandler/downloadPdf.js`
 
 ---
 
+## 8. Dashboard 模块
+
+路由文件：`src/routes/appRoutes/appApi.js`（手动注册）  
+Controller：`src/controllers/appControllers/dashboardController/trend.js`
+
+### GET /api/dashboard/trend
+
+**说明**：按日聚合指定区间内的开票总额和收款总额，返回双 Y 轴走势图所需数据。  
+**认证**：JWT  
+
+**Query 参数**：
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `startDate` | String (YYYY-MM-DD) | 是 | 区间起始日，含当日，UTC 解析 |
+| `endDate` | String (YYYY-MM-DD) | 是 | 区间结束日，含当日，UTC 解析 |
+| `currency` | String | 否 | 货币代码（大写）；不传则汇总所有货币 |
+
+**返回（200）**：
+
+```json
+{
+  "success": true,
+  "result": {
+    "days": [
+      { "date": "2026-06-01", "invoiceTotal": 12000, "paymentAmount": 8000 },
+      { "date": "2026-06-02", "invoiceTotal": 0,     "paymentAmount": 3500 }
+    ]
+  },
+  "message": "Successfully fetched dashboard trend"
+}
+```
+
+- `days` 覆盖 `startDate` 到 `endDate` 内的**每一天**，无数据日期两字段均为 `0`（不缺日期）。
+- `invoiceTotal`：当日 `Invoice.date` 匹配、`removed: false`、`status ≠ draft` 的 Invoice `total` 之和。
+- `paymentAmount`：当日 `Payment.date` 匹配、`removed: false` 的 Payment `amount` 之和。
+
+**错误码**：
+
+| HTTP 状态 | 场景 |
+|---|---|
+| 400 | `startDate`/`endDate` 缺失或格式非法 |
+| 400 | `endDate < startDate` |
+| 400 | 区间超过 366 天 |
+| 401 | JWT 无效或已过期 |
+
+---
+
 ## 未发现的 API
 
 - Quote 后端 API（`/api/quote/*`）：路由注册器 `appApi.js` 依赖 appModels glob，当前 appModels 目录中**无 Quote.js 文件**，因此 Quote 路由**未注册**。

@@ -82,14 +82,7 @@ Layout：`ErpLayout`（侧边导航 + 顶部 Header + 内容区）
 
 ### Quote（报价单）
 
-| 路径 | 动态参数 | 页面组件 | 说明 |
-|---|---|---|---|
-| `/quote` | — | `Quote` | 报价单列表（前端组件存在，后端 Model **未发现**） |
-| `/quote/create` | — | `QuoteCreate` | 新建报价单 |
-| `/quote/read/:id` | `id` | `QuoteRead` | 报价详情 |
-| `/quote/update/:id` | `id` | `QuoteUpdate` | 编辑报价单 |
-
-**注意**：`routes.jsx` 中引用了 Quote / QuoteCreate / QuoteRead / QuoteUpdate，但这 4 个组件没有 import 语句，会导致运行时错误。后端 `/api/quote/*` 也未注册（无 Quote Mongoose Model）。这些属于 OSS 版的未完成功能。
+**已从 OSS 路由中移除**。Quote / QuoteCreate / QuoteRead / QuoteUpdate 的页面组件和后端 Model 均属企业版，OSS 版不存在，原路由定义会导致启动时 `ReferenceError`，已从 `routes.jsx` 删除。
 
 ---
 
@@ -130,7 +123,7 @@ Layout：`ErpLayout`（侧边导航 + 顶部 Header + 内容区）
 | `/logout` | `Logout` | 触发 logout action，清空 localStorage，跳转到 /login |
 | `*` | `NotFound` | 404 |
 
-**注意**：`routes.jsx` 还引用了 `/payment/mode → <PaymentMode>` 和 `/taxes → <Taxes>`，同样没有 import，为未完成功能。
+**注意**：`/payment/mode`（PaymentMode）和 `/taxes`（Taxes）同属企业版功能，页面组件不存在，已从 `routes.jsx` 删除。
 
 ---
 

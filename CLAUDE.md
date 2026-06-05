@@ -148,4 +148,4 @@ npm run dev
 已知条目（从代码中观察，待确认）：
 - `adavancedCrud` 拼写错误贯穿前端代码，无法单独修正。
 - `Upload` Model 注册名有尾部空格（`mongoose.model('Upload ', ...)`），可能导致 model 引用问题。
-- Quote / PaymentMode / Taxes 功能在 OSS 版有前端 UI 但无后端 Model，路由 import 也不完整，运行会报错。
+- Quote / PaymentMode / Taxes 功能属企业版，OSS 版无后端 Model 也无页面组件。原 `routes.jsx` 中的对应路由定义会触发 `ReferenceError`，已删除这 6 条路由。

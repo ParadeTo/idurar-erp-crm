@@ -31,16 +31,14 @@ const src = readFileSync(
 
 describe('NavigationContainer.jsx — characterization (pre-P06)', () => {
   describe('N-a: dashboard menu item links to "/"', () => {
-    it('contains <Link to={"/"}>  for the dashboard entry', () => {
-      // Match the dashboard key block containing its Link target
-      // Characterize: currently <Link to={'/'}> (will become '/dashboard' in P06)
+    it('contains <Link to={"/dashboard"}> for the dashboard entry after P06', () => {
       expect(src).toMatch(/key:\s*['"]dashboard['"]/);
       const dashboardBlock = src.slice(
         src.indexOf("key: 'dashboard'"),
         src.indexOf("key: 'customer'")
       );
-      expect(dashboardBlock).toContain("to={'/'}");
-      expect(dashboardBlock).not.toContain("to={'/dashboard'}");
+      expect(dashboardBlock).toContain("to={'/dashboard'}");
+      expect(dashboardBlock).not.toContain("to={'/'}");
     });
   });
 

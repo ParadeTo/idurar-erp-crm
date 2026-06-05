@@ -52,7 +52,7 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'dashboard',
       icon: <DashboardOutlined />,
-      label: <Link to={'/'}>{translate('dashboard')}</Link>,
+      label: <Link to={'/dashboard'}>{translate('dashboard')}</Link>,
     },
     {
       key: 'customer',

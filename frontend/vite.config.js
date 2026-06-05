@@ -29,6 +29,14 @@ export default ({ mode }) => {
         },
       },
     },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: './src/test-setup.js',
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
   };
   return defineConfig(config);
 };

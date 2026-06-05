@@ -23,6 +23,7 @@ const invoiceSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
+    index: true,
   },
   expiredDate: {
     type: Date,

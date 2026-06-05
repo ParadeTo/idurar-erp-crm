@@ -30,4 +30,8 @@ routesList.forEach(({ entity, controllerName }) => {
   routerApp(entity, controller);
 });
 
+router
+  .route('/dashboard/trend')
+  .get(catchErrors(appControllers.dashboardController.trend));
+
 module.exports = router;

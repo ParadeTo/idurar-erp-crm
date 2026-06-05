@@ -147,16 +147,16 @@ describe('Batch 9 — appApi Route Registration Characterization', () => {
     });
   });
 
-  describe('9-d: GET /api/dashboard/trend → 404 with valid token (not yet registered)', () => {
-    it('returns 404 before P03 adds the route', async () => {
+  describe('9-d: GET /api/dashboard/trend → 200 with valid token (route now registered by P03)', () => {
+    it('returns 200 and days array after P03 implementation', async () => {
       const token = await createAdminAndLogin();
       const res = await request(app)
-        .get('/api/dashboard/trend?startDate=2026-01-01&endDate=2026-01-31')
+        .get('/api/dashboard/trend?startDate=2026-01-01&endDate=2026-01-07')
         .set('Authorization', `Bearer ${token}`);
 
-      // Characterize: route does not exist → Express notFound handler → 404
-      // This test MUST fail after P03 is implemented (that's the point).
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.result.days).toHaveLength(7);
     });
   });
 

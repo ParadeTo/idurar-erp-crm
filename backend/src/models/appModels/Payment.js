@@ -27,6 +27,7 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     required: true,
+    index: true,
   },
   amount: {
     type: Number,

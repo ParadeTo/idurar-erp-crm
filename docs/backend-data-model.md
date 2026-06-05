@@ -154,7 +154,7 @@
 | year | Number | 年份 | 必填 |
 | content | String | 备注内容 | |
 | recurring | String | 周期类型 | enum: daily/weekly/monthly/annually/quarter |
-| date | Date | 发票日期 | 必填 |
+| date | Date | 发票日期 | 必填；**已建索引**（供 dashboard/trend 聚合查询）|
 | expiredDate | Date | 到期日期 | 必填 |
 | client | ObjectId → Client | 客户 | 必填，autopopulate |
 | converted.from | String | 来源类型 | enum: 'quote'/'offer' |
@@ -206,7 +206,7 @@
 | number | Number | 付款编号 | 必填 |
 | client | ObjectId → Client | 客户 | 必填，autopopulate |
 | invoice | ObjectId → Invoice | 关联发票 | 必填，autopopulate |
-| date | Date | 付款日期 | 必填，默认 Date.now |
+| date | Date | 付款日期 | 必填，默认 Date.now；**已建索引**（供 dashboard/trend 聚合查询）|
 | amount | Number | 付款金额 | 必填，校验：> 0 且 ≤ 剩余未付金额 |
 | currency | String | 货币代码 | 必填，默认 'NA' |
 | ref | String | 交易参考号 | |
